@@ -87,8 +87,6 @@ def readManyFiles(fList):
         except:
             print "Fuckup occurred"
             continue
-        #for d in decs:
-        #    decodedData.append(d)
     return decodedData
 
 
@@ -99,34 +97,18 @@ def readFileAndDecode(f):
     nPoints = data[0]
 
     
-    #data = data[1]
-
-    # keep one channel only
-    #data = data[:,0]
     data = data[1]
     data = (data[:, 0]**2 + data[:, 1]**2)
 
     # rectification
     data = np.abs(data)
 
-    #plt.plot(data[:1000])
-    #plt.show()
 
-
-    # convolve to make simple low pass filter
-    #kernel = np.hstack([-1 * np.ones(30) / 60.0, np.ones(30) / 60.0])
     kernel = np.ones(20) / 20.0
     y = np.convolve(data, kernel, mode='valid')
 
     signal = (y > 6000)
 
-    #plt.plot(data, c="r")
-    #plt.plot(y, c="b")
-    #plt.show()
-
-    # plt.plot(signal[:10000])
-    # plt.ylim(-3, 3)
-    # plt.show()
 
     periods, encoding = decodeManchester(signal)
     #print periods
@@ -142,14 +124,12 @@ def readFileAndDecode(f):
 def main():
     f = "data/data_readings.wav"
     fList = [f]
-    #readFileAndDecode(f)
 
     fListProcessed = []
     for i in range(18):
         fListProcessed.append("processed/test1 (%s).wav" % (i+1))
 
     data = readManyFiles(fListProcessed)
-    #for k, ds in data.iteritems():
     for k in sorted(data.keys()):
         ds = data[k]
         for d in ds:
